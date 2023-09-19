@@ -5,24 +5,33 @@ class Door:
         self.number = number
         self.item = item
 
+def create_doors(choices_list, choices_doors):
+    chosen_door_number = int(input("\nChoose a door: "))
+    choices_doors.remove(chosen_door_number)
+    global chosen_door, not_chosen1, not_chosen2
+    chosen_door = Door(chosen_door_number, choices_list[random.randint(0,2)])
+    choices_list.remove(chosen_door.item)
+
+    not_chosen1 = Door(choices_doors[random.randint(0,1)], choices_list[random.randint(0,1)])
+    choices_list.remove(not_chosen1.item)
+    choices_doors.remove(not_chosen1.number)
+    not_chosen2 = Door(choices_doors[0], choices_list[0])
+
+
 choices_list = ['Goat', 'Goat', "1 million dollars"]
-choices_doors = ['1', '2', '3']
+choices_doors = [1, 2, 3]
 
-
-chosen_door = int(input("Choose a door: "))
-choices_doors.remove(chosen_door)
-chosen_door = Door(chosen_door, choices_list[random.randint(0,2)])
-print(chosen_door.item)
-choices_list.remove(chosen_door.item)
-
-print(choices_list)
-not_chosen1 = Door(choices_doors[random.randint(0,1)], choices_list[random.randint(0,1)])
-print(not_chosen1.number)
-choices_list.remove(not_chosen1.number)
-choices_list.remove(not_chosen1.item)
-not_chosen2 = Door(choices_doors[0], choices_list[0])
+create_doors(choices_list, choices_doors)
 
 if not_chosen1.item == 'Goat':
-    print("The goat is in door",not_chosen1.number)
+    print("\nThe goat is in door",not_chosen1.number)
+    switch = not_chosen2
+    
 else:
-    print("The goat is in door",not_chosen2.number)
+    print("\nThe goat is in door",not_chosen2.number)
+    switch = not_chosen1
+
+decision = input("Stay or Switch? ")
+
+if decision.lower == 'switch':
+    chosen_door = switch
