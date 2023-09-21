@@ -26,12 +26,21 @@ create_doors(choices_list, choices_doors)
 if not_chosen1.item == 'Goat':
     print("\nThe goat is in door",not_chosen1.number)
     switch = not_chosen2
-    
+
 else:
     print("\nThe goat is in door",not_chosen2.number)
     switch = not_chosen1
 
-decision = input("Stay or Switch? ")
+decision = input("\nStay or Switch? ")
 
-if decision.lower == 'switch':
+if decision.lower() == 'switch':
     chosen_door = switch
+    if chosen_door.item == 'Goat':
+        print("You switched to",chosen_door.number,"You lose!")
+    else:
+        print("You switched to",chosen_door.number,"You lose!")
+else:
+    if chosen_door.item == 'Goat':
+        print("You switched to",chosen_door.number,"You lose!")
+    else:
+        print("You switched to",chosen_door.number,"You lose!")
