@@ -8,7 +8,7 @@ class Door:
 def create_doors(choices_list, choices_doors, infomation):
     chosen_door_number = int(input("\nChoose a door: "))
     if chosen_door_number == 0:
-        print("exiting...")
+        print("exiting...\n")
         return True
     else:
         infomation[1].append(chosen_door_number)
@@ -58,15 +58,38 @@ def part1(infomation):
                 infomation[3].append("Win")
         return False
 
+
+def finishing_p1(info, stay_wins, switch_wins):
+    print("\n**Summery**")
+    column_widths = [max(len(str(item)) for item in col) for col in zip(*info)]
+    for row in info:
+        formatted_row = [str(item).ljust(width) for item, width in zip(row, column_widths)]
+        print("    ".join(formatted_row))
+
+    info[3].remove('Outcome')
+    info[2].remove('Action')
+    switch_wins = win_count(info, 'switch', switch_wins)
+    stay_wins = win_count(info, 'stay', stay_wins)
+    winpercentage(info, switch_wins)
+    winpercentage(info, stay_wins)
+
+def win_count(info, choice, count):
+    for i in range(len(info[2])):
+        if info[2][i] == choice and info[3][i] == 'Win':
+            count += 1
+    print("\nWins with",choice,":",count)
+    return count
+
+def winpercentage(info, wins):
+    print("\nPr(Winning with switch) =",(wins/len(info[3])*100))
+
 global exit
 exit = False
 infomation = [["Round"],["Choice"],["Action"],["Outcome"]]
+switch_wins = 0
+stay_wins = 0
 
 while exit is False:
     exit = part1(infomation)
 
-
-column_widths = [max(len(str(item)) for item in col) for col in zip(*infomation)]
-for row in infomation:
-    formatted_row = [str(item).ljust(width) for item, width in zip(row, column_widths)]
-    print("    ".join(formatted_row))
+finishing_p1(infomation, stay_wins, switch_wins)
