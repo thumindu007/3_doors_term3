@@ -1,70 +1,52 @@
 import random
 
-class Door:
-    def __init__(self, number, item):
-        self.number = number
-        self.item = item
+def initialise_doors():
+    doors = ['Goat', 'Goat', '1 million dollars']
+    random.shuffle(doors)
+    return doors
 
-def create_doors(choices_list, choices_doors, infomation):
-    chosen_door_number = int(input("\nChoose a door: "))
-    if chosen_door_number == 0:
-        print("exiting...\n")
-        return True
-    else:
-        infomation[1].append(chosen_door_number)
-        choices_doors.remove(chosen_door_number)
-        global chosen_door, not_chosen1, not_chosen2
-        chosen_door = Door(chosen_door_number, choices_list[random.randint(0,2)])
-        choices_list.remove(chosen_door.item)
+def part1(infomation, part):
+    doors = initialise_doors()
+    print(doors)
+    round = 1
+    switch_wins, stay_wins = 0, 0
+    goat_doors = []
 
-        not_chosen1 = Door(choices_doors[random.randint(0,1)], choices_list[random.randint(0,1)])
-        choices_list.remove(not_chosen1.item)
-        choices_doors.remove(not_chosen1.number)
-        not_chosen2 = Door(choices_doors[0], choices_list[0])
-        return False
+    while True:
 
-def part1(infomation):
-    choices_list = ['Goat', 'Goat', "1 million dollars"]
-    choices_doors = [1, 2, 3]
-    
-    tf = create_doors(choices_list, choices_doors, infomation)
-    if tf is True:
-        return True
-    else:
-        infomation[0].append(len(infomation[0]))
-        if not_chosen1.item == 'Goat':
-            print("\nThe goat is in door",not_chosen1.number)
-            switch = not_chosen2
+        print(f"Round #{round}: Door 1 | Door 2 | Door 3")
+        user_choice = int(input("Choose a door: "))
+        if user_choice == 0:
+            break
 
-        else:
-            print("\nThe goat is in door",not_chosen2.number)
-            switch = not_chosen1
-
-        decision = input("\nStay or Switch? ")
-        infomation[2].append(decision)
-        if decision.lower() == 'switch':
-            if switch.item == 'Goat':
-                print("You switched to",switch.number,"You lose!")
-                infomation[3].append("Lose")
+        for i in range(3):
+            if doors[i] == 'Goat':
+                goat_doors.append(i+1)
             else:
-                print("You switched to",switch.number,"You WIN!")
-                infomation[3].append("Win")
+                prize_door = i+1
+        print(goat_doors)
+        print(prize_door)
+        if goat_doors[0] == user_choice:
+            print(f"Goat is in Door {goat_doors[1]}")
+            
         else:
-            if chosen_door.item == 'Goat':
-                print("You switched to",chosen_door.number,"You lose!")
-                infomation[3].append("Lose")
-            else:
-                print("You switched to",chosen_door.number,"You WIN!")
-                infomation[3].append("Win")
-        return False
+            print(f"Goat is in Door {goat_doors[0]}")
+        
+        switch_choice = input("Stay or Switch? ").strip().lower()
+        if 
 
 
 def finishing_p1(info, stay_wins, switch_wins):
     print("\n**Summery**")
-    column_widths = [max(len(str(item)) for item in col) for col in zip(*info)]
-    for row in info:
-        formatted_row = [str(item).ljust(width) for item, width in zip(row, column_widths)]
-        print("    ".join(formatted_row))
+    column_widths = [max(len(str(item)) for item in col) for col in info]
+
+    # Determine the number of rows in the table
+    num_rows = len(info)  # Use len(info) to get the number of rows
+
+    # Print the table vertically
+    for i in range(num_rows):
+        formatted_row = [str(row[i]).ljust(column_widths[i]) for row in info]
+        print(" | ".join(formatted_row))
 
     info[3].remove('Outcome')
     info[2].remove('Action')
@@ -83,13 +65,10 @@ def win_count(info, choice, count):
 def winpercentage(info, wins):
     print("\nPr(Winning with switch) =",(wins/len(info[3])*100))
 
-global exit
-exit = False
+
 infomation = [["Round"],["Choice"],["Action"],["Outcome"]]
-switch_wins = 0
-stay_wins = 0
 
-while exit is False:
-    exit = part1(infomation)
 
-finishing_p1(infomation, stay_wins, switch_wins)
+which_part = int(input("What part do you want to run"))
+
+if which_part == 1: part1(infomation, 1)
