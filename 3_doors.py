@@ -5,7 +5,7 @@ def initialise_doors():
     random.shuffle(doors)
     return doors
 
-def part1(infomation, part):
+def play_part1(infomation, part):
     doors = initialise_doors()
     round = 1
     switch_wins, stay_wins = 0, 0
@@ -77,4 +77,4 @@ infomation = [["Round"],["Choice"],["Action"],["Outcome"]]
 
 which_part = int(input("\nWhat part do you want to run"))
 
-if which_part == 1: part1(infomation, 1)
+if which_part == 1: play_part1(infomation, 1)
