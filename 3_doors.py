@@ -56,14 +56,11 @@ def print_summary(info, stay_wins, switch_wins):
     print("\n       **Summary**\nResults Table")
     table = tabulate(info, tablefmt="fancy_grid", headers="firstrow")
     print(table)
-    for round in info[1:]:
-        if round[2] == "Switch" and round[3] == "Win":
+    for game_round in info[1:]:
+        if game_round[2] == "switch" and game_round[3] == "Win":
             switch_wins += 1
-            print(switch_wins)
-        elif round[2] == "Stay" and round[3] == "Win":
+        elif game_round[2] == "stay" and game_round[3] == "Win":
             stay_wins += 1
-            print(stay_wins)
-
     print(f"\nWins with switching = {switch_wins}\nWins with staying = {stay_wins}")
     print(f"\n\nPr(Winning with switch) = {(switch_wins/(switch_wins+stay_wins))*100}\nPr(Winning with stay) = {(stay_wins/(switch_wins+stay_wins))*100}")
 
