@@ -6,21 +6,25 @@ def initialise_doors():
     random.shuffle(doors)
     return doors
 
-def play_part1(infomation, part):
+def play_part1(infomation, part, number_of_rounds):
     doors = initialise_doors()
     round = 1
     switch_wins, stay_wins = 0, 0
     
-    while True:
+    for i in range(number_of_rounds):
         choices = [1, 2 ,3]
         goat_doors = []
         round_infomation = []
         round_infomation.append(round)
 
         print(f"\nRound #{round}: Door 1 | Door 2 | Door 3")
-        user_choice = int(input("\nChoose a door: "))
-        if user_choice == 0:
-            break
+        if part == 1:
+            user_choice = int(input("\nChoose a door: "))
+            if user_choice == 0:
+                break
+        else:
+            user_choice = random.randint(1,3)
+            
         choices.remove(user_choice)
         round_infomation.append(user_choice)
 
@@ -68,4 +72,4 @@ infomation = [["Round","Choice","Action","Outcome"]]
 
 which_part = int(input("\nWhat part do you want to run"))
 
-if which_part == 1: play_part1(infomation, 1)
+if which_part == 1: play_part1(infomation, 1, 9999999)
