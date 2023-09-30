@@ -12,9 +12,7 @@ def play_part1(infomation, part, number_of_rounds):
     switch_wins, stay_wins = 0, 0
     
     for i in range(number_of_rounds):
-        choices = [1, 2 ,3]
-        goat_doors = []
-        round_infomation = []
+        choices, goat_doors, round_infomation, switch_choice_list  = [1, 2 ,3], [], [], ['switch', 'stay']
         round_infomation.append(round)
 
         print(f"\nRound #{round}: Door 1 | Door 2 | Door 3")
@@ -39,7 +37,11 @@ def play_part1(infomation, part, number_of_rounds):
             print(f"Goat is in Door {goat_doors[0]}")
             choices.remove(goat_doors[0])
         
-        switch_choice = input("\nStay or Switch? ").strip().lower()
+        if part == 1:
+            switch_choice = input("\nStay or Switch? ").strip().lower()
+        else:
+            switch_choice = random.choice(switch_choice_list)
+
         round_infomation.append(switch_choice)
         if switch_choice == 'switch':
             user_choice = choices[0]
@@ -73,3 +75,7 @@ infomation = [["Round","Choice","Action","Outcome"]]
 which_part = int(input("\nWhat part do you want to run"))
 
 if which_part == 1: play_part1(infomation, 1, 9999999)
+
+elif which_part == 2:
+    play_part1(infomation, 2, 50)
+    print("The rest were simulated silently")
