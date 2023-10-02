@@ -95,8 +95,7 @@ def print_summary(info, stay_wins, switch_wins, quick_summary, rounds, part):
         print(f"\nWins with switching = {switch_wins}\nWins with staying = {stay_wins}")
         print(f"\n\nPr(Winning with switch) = {(switch_wins/(switch_wins+stay_wins))*100}\nPr(Winning with stay) = {(stay_wins/(switch_wins+stay_wins))*100}\n")
 
-infomation = [["Round","Choice","Action","Outcome"]]
-part2_rounds = [50, 100, 1000, 5000, 10000]
+infomation, part2_rounds = [["Round","Choice","Action","Outcome"]], [50, 100, 1000, 5000, 10000]
 which_part = int(input("\nWhat part do you want to run  "))
 
 if which_part == 1:
