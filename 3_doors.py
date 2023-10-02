@@ -41,6 +41,10 @@ def play_part1(infomation, part, number_of_rounds, quick_summary):
 
         if part == 1:
             switch_choice = input("\nStay or Switch? ").strip().lower()
+        elif part == 3:
+            switch_choice = 'stay'
+        elif part == 4:
+            switch_choice = 'switch'
         else:
             switch_choice = random.choice(switch_choice_list)
 
@@ -60,21 +64,29 @@ def play_part1(infomation, part, number_of_rounds, quick_summary):
         round += 1
         infomation.append(round_infomation)
 
-    print_summary(infomation, stay_wins, switch_wins, quick_summary, round)
+    print_summary(infomation, stay_wins, switch_wins, quick_summary, round, part)
 
-def print_summary(info, stay_wins, switch_wins, quick_summary, rounds):
+def print_summary(info, stay_wins, switch_wins, quick_summary, rounds, part):
     for game_round in info[1:]:
         if game_round[2] == "switch" and game_round[3] == "Win":
             switch_wins += 1
         elif game_round[2] == "stay" and game_round[3] == "Win":
             stay_wins += 1
     if quick_summary:
-        print(f"{rounds-1}         {(switch_wins/(switch_wins+stay_wins))*100}%      {(stay_wins/(switch_wins+stay_wins))*100}%")
+        quick_sum_list = [["Rounds", "Pr(Win with Switch)", "Pr(Win with Stay)"],[rounds-1, (f"{(switch_wins/(switch_wins+stay_wins))*100}%"), (f'{(stay_wins/(switch_wins+stay_wins))*100}%')]]
+        quick_summary_print = tabulate(quick_sum_list, tablefmt="fancy_grid", headers="firstrow")
+        print(quick_summary_print)
         if rounds-1 == 1000:
-            output_file = open('part2_random.txt', 'w')
+            if part == 2:
+                output_file = open('part2_random.txt', 'w')
+            elif part == 3:
+                output_file = open('part3_stay.txt', 'w')
+            elif part == 4:
+                output_file = open('part4_switch.txt', 'w')
             table = tabulate(info, tablefmt="fancy_grid", headers="firstrow")
             output_file.write(table)
             output_file.close()
+            
     else:
         print("\n       **Summary**\nResults Table")
         table = tabulate(info, tablefmt="fancy_grid", headers="firstrow")
@@ -84,7 +96,7 @@ def print_summary(info, stay_wins, switch_wins, quick_summary, rounds):
 
 infomation = [["Round","Choice","Action","Outcome"]]
 
-which_part = int(input("\nWhat part do you want to run"))
+which_part = int(input("\nWhat part do you want to run  "))
 
 if which_part == 1:
     play_part1(infomation, 1, 9999999, False)
@@ -92,9 +104,15 @@ if which_part == 1:
 elif which_part == 2:
     print("Just simulated 50 rounds with random switching.")
     play_part1(infomation, 2, 50, False)
-    print("\nThe rest were simulated silently...\n\n\nRounds     Pr(Win with Switch)    Pr(Win with Stay)")
+    print("\nThe rest were simulated silently...\n\n")
     play_part1(infomation, 2, 50, True)
     play_part1(infomation, 2, 100, True)
     play_part1(infomation, 2, 1000, True)
     play_part1(infomation, 2, 5000, True)
     play_part1(infomation, 2, 10000, True)
+
+elif which_part == 3:
+    play_part1(infomation, 3, 1000, True)
+
+elif which_part == 4:
+    play_part1(infomation, 4, 1000, True)
