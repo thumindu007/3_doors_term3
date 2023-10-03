@@ -1,20 +1,23 @@
 import random
 from tabulate import tabulate
 
-def initialise_doors():
+def initialise_doors(part):
     doors = ['Goat', 'Goat', '1 million dollars']
+    if part == 5:
+        doors = ['Goat', 'Goat', 'Goat', 'Goat', 'Goat', 'Goat', 'Goat', 'Goat', 'Goat', '1 million dollars']
     random.shuffle(doors)
     return doors
 
 def play_part1(infomation, part, number_of_rounds, quick_summary):
-    doors = initialise_doors()
+    doors = initialise_doors(part)
     round = 1
     switch_wins, stay_wins = 0, 0
 
     for i in range(number_of_rounds):
         choices, goat_doors, round_infomation, switch_choice_list  = [1, 2 ,3], [], [], ['switch', 'stay']
+        if part == 5:
+            choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         round_infomation.append(round)
-
         if part == 1:
             print(f"\nRound #{round}: Door 1 | Door 2 | Door 3")
         if part == 1:
@@ -23,27 +26,42 @@ def play_part1(infomation, part, number_of_rounds, quick_summary):
                 break
         else:
             user_choice = random.randint(1,3)
+            if part == 5:
+                user_choice = random.randint(1,10)
+
         choices.remove(user_choice)
         round_infomation.append(user_choice)
 
-        for i in range(3):
-            if doors[i] == 'Goat':
-                goat_doors.append(i+1)
-
-        if goat_doors[0] == user_choice:
-            if part == 1:
-                print(f"Goat is in Door {goat_doors[1]}")   
-            choices.remove(goat_doors[1])
+        counter = 1
+        if part == 5:
+            for i in doors:
+                if i == 'Goat':
+                    goat_doors.append(counter)
+                counter += 1
         else:
-            if part == 1:
-                print(f"Goat is in Door {goat_doors[0]}")
-            choices.remove(goat_doors[0])
+            for i in range(3):
+                if doors[i] == 'Goat':
+                    goat_doors.append(i+1)
+
+        if part == 5:
+            for i in range(10):
+                if goat_doors[(i-1)] == '1 million dollars':
+                    choices.remove(goat_doors[(i-1)])
+        else:
+            if goat_doors[0] == user_choice:
+                if part == 1:
+                    print(f"Goat is in Door {goat_doors[1]}")
+                choices.remove(goat_doors[1])
+            else:
+                if part == 1:
+                    print(f"Goat is in Door {goat_doors[0]}")
+                choices.remove(goat_doors[0])
 
         if part == 1:
             switch_choice = input("\nStay or Switch? ").strip().lower()
         elif part == 3:
             switch_choice = 'stay'
-        elif part == 4:
+        elif part == 4 or part == 5:
             switch_choice = 'switch'
         else:
             switch_choice = random.choice(switch_choice_list)
@@ -55,6 +73,8 @@ def play_part1(infomation, part, number_of_rounds, quick_summary):
         if doors[user_choice-1] == '1 million dollars':
             if part == 1:
                 print(f"You switched to Door {user_choice + 1} ... You WIN!")
+            if part == 5:
+                print("WIN")
             round_infomation.append('Win')
         else:
             if part == 1:
@@ -84,6 +104,8 @@ def print_summary(info, stay_wins, switch_wins, quick_summary, rounds, part):
                 output_file = open('part3_stay.txt', 'w')
             elif part == 4:
                 output_file = open('part4_switch.txt', 'w')
+            elif part == 5:
+                output_file = open('part5_ten_doors.txt', 'w')
             table = tabulate(info, tablefmt="fancy_grid", headers="firstrow")
             output_file.write(table)
             output_file.close()
@@ -113,3 +135,6 @@ elif which_part == 3:
 
 elif which_part == 4:
     play_part1(infomation, 4, 1000, True)
+
+elif which_part == 5:
+    play_part1(infomation, 5, 1000, True)
