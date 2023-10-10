@@ -44,9 +44,11 @@ def play_part1(infomation, part, number_of_rounds, quick_summary):
                     goat_doors.append(i+1)
 
         if part == 5:
-            for i in range(10):
-                if goat_doors[(i-1)] == '1 million dollars':
-                    choices.remove(goat_doors[(i-1)])
+            choices = []
+            for i in range(1, 11):
+                if i != user_choice and i not in goat_doors:
+                    choices.append(i) 
+            if 
         else:
             if goat_doors[0] == user_choice:
                 if part == 1:
@@ -56,6 +58,8 @@ def play_part1(infomation, part, number_of_rounds, quick_summary):
                 if part == 1:
                     print(f"Goat is in Door {goat_doors[0]}")
                 choices.remove(goat_doors[0])
+
+        print(choices)
 
         if part == 1:
             switch_choice = input("\nStay or Switch? ").strip().lower()
@@ -70,20 +74,18 @@ def play_part1(infomation, part, number_of_rounds, quick_summary):
         if switch_choice == 'switch':
             user_choice = choices[0]
 
-        if doors[user_choice-1] == '1 million dollars':
-            if part == 1:
-                print(f"You switched to Door {user_choice + 1} ... You WIN!")
-            if part == 5:
-                print("WIN")
-            round_infomation.append('Win')
-        else:
-            if part == 1:
-                print(f"You switched to Door {user_choice + 1} ... You lose!")
-            round_infomation.append('Lose')
-
+        if choices:
+            if doors[user_choice-1] == '1 million dollars':
+                if part == 1: print(f"You switched to Door {user_choice + 1} ... You WIN!")
+                round_infomation.append('Win')
+            else:
+                if part == 1: print(f"You switched to Door {user_choice + 1} ... You lose!")
+                if part == 5:
+                    print("lose")
+                round_infomation.append('Lose')
         round += 1
         infomation.append(round_infomation)
-
+    print(infomation)
     print_summary(infomation, stay_wins, switch_wins, quick_summary, round, part)
 
 def print_summary(info, stay_wins, switch_wins, quick_summary, rounds, part):
@@ -94,7 +96,9 @@ def print_summary(info, stay_wins, switch_wins, quick_summary, rounds, part):
             stay_wins += 1
 
     if quick_summary:
-        quick_sum_list = [["Rounds", "Pr(Win with Switch)", "Pr(Win with Stay)"],[rounds-1, (f"{(switch_wins/(switch_wins+stay_wins))*100}%"), (f'{(stay_wins/(switch_wins+stay_wins))*100}%')]]
+        quick_sum_list = [["Rounds", "Pr(Win with Switch)", "Pr(Win with Stay)"],
+                          [rounds-1, (f"{(switch_wins/(switch_wins+stay_wins))*100}%"), 
+                           (f'{(stay_wins/(switch_wins+stay_wins))*100}%')]]
         quick_summary_print = tabulate(quick_sum_list, tablefmt="fancy_grid", headers="firstrow")
         print(quick_summary_print)
         if rounds-1 == 1000:
