@@ -48,7 +48,6 @@ def play_part1(infomation, part, number_of_rounds, quick_summary):
             for i in range(1, 11):
                 if i != user_choice and i not in goat_doors:
                     choices.append(i) 
-            if 
         else:
             if goat_doors[0] == user_choice:
                 if part == 1:
@@ -58,8 +57,6 @@ def play_part1(infomation, part, number_of_rounds, quick_summary):
                 if part == 1:
                     print(f"Goat is in Door {goat_doors[0]}")
                 choices.remove(goat_doors[0])
-
-        print(choices)
 
         if part == 1:
             switch_choice = input("\nStay or Switch? ").strip().lower()
@@ -71,10 +68,12 @@ def play_part1(infomation, part, number_of_rounds, quick_summary):
             switch_choice = random.choice(switch_choice_list)
 
         round_infomation.append(switch_choice)
-        if switch_choice == 'switch':
-            user_choice = choices[0]
+        if doors[user_choice-1] == '1 million dollars':
+            round_infomation.append('Lose')
+        else:
+            if switch_choice == 'switch':
+                user_choice = choices[0]
 
-        if choices:
             if doors[user_choice-1] == '1 million dollars':
                 if part == 1: print(f"You switched to Door {user_choice + 1} ... You WIN!")
                 round_infomation.append('Win')
@@ -85,7 +84,6 @@ def play_part1(infomation, part, number_of_rounds, quick_summary):
                 round_infomation.append('Lose')
         round += 1
         infomation.append(round_infomation)
-    print(infomation)
     print_summary(infomation, stay_wins, switch_wins, quick_summary, round, part)
 
 def print_summary(info, stay_wins, switch_wins, quick_summary, rounds, part):
@@ -113,7 +111,6 @@ def print_summary(info, stay_wins, switch_wins, quick_summary, rounds, part):
             table = tabulate(info, tablefmt="fancy_grid", headers="firstrow")
             output_file.write(table)
             output_file.close()
-
     else:
         print("\n       **Summary**\nResults Table")
         table = tabulate(info, tablefmt="fancy_grid", headers="firstrow")
