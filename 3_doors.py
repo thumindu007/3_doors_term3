@@ -9,15 +9,19 @@ def initialise_doors(part):
     return doors
 
 def play_part1(infomation, part, number_of_rounds, quick_summary):
-    doors, round, switch_wins, stay_wins= initialise_doors(part), 1, 0, 0
+    round, switch_wins, stay_wins=1, 0, 0
     for _ in range(number_of_rounds):
-        choices, goat_doors, round_infomation, switch_choice_list  = [1, 2 ,3], [], [], ['switch', 'stay']
+        doors, choices, goat_doors, round_infomation, switch_choice_list  = initialise_doors(part), [1, 2 ,3], [], [], ['switch', 'stay']
         if part == 5:
             choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         round_infomation.append(round)
         if part == 1:
             print(f"\nRound #{round}: Door 1 | Door 2 | Door 3")
-            user_choice = int(input("\nChoose a door: "))
+            while True:
+                user_choice = input("\nChoose a door: ")
+                if user_choice == '0' or user_choice == '1' or user_choice == '2' or user_choice == '3':
+                    break
+            user_choice = int(user_choice)
             if user_choice == 0:
                 break
         else:
@@ -50,7 +54,11 @@ def play_part1(infomation, part, number_of_rounds, quick_summary):
                 if part == 1:   print(f"Goat is in Door {goat_doors[0]}")
                 choices.remove(goat_doors[0])
 
-        if part == 1:     switch_choice = input("\nStay or Switch? ").strip().lower()
+        if part == 1:
+            while True:
+                switch_choice = input("\nstay or switch? ")
+                if switch_choice == 'stay' or switch_choice == 'switch':
+                    break
         elif part == 3:   switch_choice = 'stay'
         elif part == 4 or part == 5:   switch_choice = 'switch'
         else:   switch_choice = random.choice(switch_choice_list)
