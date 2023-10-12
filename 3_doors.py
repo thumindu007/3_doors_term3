@@ -9,7 +9,7 @@ def initialise_doors(part):
     return doors
 
 def play_part1(infomation, part, number_of_rounds, quick_summary):
-    round, switch_wins, stay_wins=1, 0, 0
+    round, switch_wins, stay_wins = 1, 0, 0
     for _ in range(number_of_rounds):
         doors, choices, goat_doors, round_infomation, switch_choice_list  = initialise_doors(part), [1, 2 ,3], [], [], ['switch', 'stay']
         if part == 5:
