@@ -82,6 +82,7 @@ def print_summary(info, stay_wins, switch_wins, quick_summary, rounds, part):
     if quick_summary:
         quick_sum_list = [["Rounds", "Pr(Win with Switch)", "Pr(Win with Stay)"],[rounds-1, (f"{(switch_wins/(rounds-1))*100}%"), (f'{(stay_wins/(rounds-1))*100}%')]]
         quick_summary_print = tabulate(quick_sum_list, tablefmt="fancy_grid", headers="firstrow")
+        print(quick_summary_print)
         if rounds-1 == 1000:
             if part == 2:    output_file = open('part2_random.txt', 'w')
             elif part == 3:  output_file = open('part3_stay.txt', 'w')
