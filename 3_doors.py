@@ -8,8 +8,8 @@ def initialise_doors(part):
     random.shuffle(doors)
     return doors
 
-def play_part1(infomation, part, number_of_rounds, quick_summary):
-    round, switch_wins, stay_wins = 1, 0, 0
+def game_loop(part, number_of_rounds, quick_summary):
+    round, switch_wins, stay_wins, infomation = 1, 0, 0, [["Round","Choice","Action","Outcome"]]
     for _ in range(number_of_rounds):
         doors, choices, goat_doors, round_infomation, switch_choice_list  = initialise_doors(part), [1, 2 ,3], [], [], ['switch', 'stay']
         if part == 5:
@@ -19,7 +19,7 @@ def play_part1(infomation, part, number_of_rounds, quick_summary):
             print(f"\nRound #{round}: Door 1 | Door 2 | Door 3")
             while True:
                 user_choice = input("\nChoose a door: ")
-                if user_choice == '0' or user_choice == '1' or user_choice == '2' or user_choice == '3':
+                if user_choice in ['0', '1', '2', '3']:
                     break
             user_choice = int(user_choice)
             if user_choice == 0:
@@ -32,15 +32,11 @@ def play_part1(infomation, part, number_of_rounds, quick_summary):
         round_infomation.append(user_choice)
 
         counter = 1
-        if part == 5:
-            for i in doors:
-                if i == 'Goat':
-                    goat_doors.append(counter)
-                counter += 1
-        else:
-            for i in range(3):
-                if doors[i] == 'Goat':
-                    goat_doors.append(i+1)
+        for e in doors:
+            if e == 'Goat':
+                goat_doors.append(counter)
+            counter += 1
+
         if part == 5:
             choices = []
             for i in range(1, 11):
@@ -57,7 +53,7 @@ def play_part1(infomation, part, number_of_rounds, quick_summary):
         if part == 1:
             while True:
                 switch_choice = input("\nstay or switch? ")
-                if switch_choice == 'stay' or switch_choice == 'switch':
+                if switch_choice in ['switch', 'stay']:
                     break
         elif part == 3:   switch_choice = 'stay'
         elif part == 4 or part == 5:   switch_choice = 'switch'
@@ -77,15 +73,15 @@ def play_part1(infomation, part, number_of_rounds, quick_summary):
         infomation.append(round_infomation)
     print_summary(infomation, stay_wins, switch_wins, quick_summary, round, part)
 
+#  The win percentage was calculated 
 def print_summary(info, stay_wins, switch_wins, quick_summary, rounds, part):
     for game_round in info[1:]:
         if game_round[2] == "switch" and game_round[3] == "Win":   switch_wins += 1
         elif game_round[2] == "stay" and game_round[3] == "Win":   stay_wins += 1
 
     if quick_summary:
-        quick_sum_list = [["Rounds", "Pr(Win with Switch)", "Pr(Win with Stay)"],[rounds-1, (f"{(switch_wins/(switch_wins+stay_wins))*100}%"), (f'{(stay_wins/(switch_wins+stay_wins))*100}%')]]
+        quick_sum_list = [["Rounds", "Pr(Win with Switch)", "Pr(Win with Stay)"],[rounds-1, (f"{(switch_wins/(rounds-1))*100}%"), (f'{(stay_wins/(rounds-1))*100}%')]]
         quick_summary_print = tabulate(quick_sum_list, tablefmt="fancy_grid", headers="firstrow")
-        print(quick_summary_print)
         if rounds-1 == 1000:
             if part == 2:    output_file = open('part2_random.txt', 'w')
             elif part == 3:  output_file = open('part3_stay.txt', 'w')
@@ -100,20 +96,20 @@ def print_summary(info, stay_wins, switch_wins, quick_summary, rounds, part):
         print(f"\nWins with switching = {switch_wins}\nWins with staying = {stay_wins}")
         print(f"\n\nPr(Winning with switch) = {(switch_wins/(switch_wins+stay_wins))*100}\nPr(Winning with stay) = {(stay_wins/(switch_wins+stay_wins))*100}\n")
 
-infomation, part2_rounds = [["Round","Choice","Action","Outcome"]], [50, 100, 1000, 5000, 10000]
+part2_rounds = [50, 100, 1000, 5000, 10000]
 which_part = int(input("\nWhat part do you want to run  "))
 
-if which_part == 1:   play_part1(infomation, 1, 9999999, False)
+if which_part == 1:   game_loop(1, 9999999, False)
 
 elif which_part == 2:
     print("Just simulated 50 rounds with random switching.")
-    play_part1(infomation, 2, 50, False)
+    game_loop(2, 50, False)
     print("\nThe rest were simulated silently...\n\n")
     for i in part2_rounds:
-        play_part1(infomation, 2, i, True)
+        game_loop(2, i, True)
 
-elif which_part == 3:   play_part1(infomation, 3, 1000, True)
+elif which_part == 3:   game_loop(3, 1000, True)
 
-elif which_part == 4:   play_part1(infomation, 4, 1000, True)
+elif which_part == 4:   game_loop(4, 1000, True)
 
-elif which_part == 5:   play_part1(infomation, 5, 1000, True)
+elif which_part == 5:   game_loop(5, 1000, True)
