@@ -1,7 +1,7 @@
 import random
 from tabulate import tabulate
 
-def initialise_doors(part):
+def initialise_doors(part): #Creates doors to be used later
     doors = ['Goat', 'Goat', '1 million dollars']
     if part == 5:
         doors = ['Goat', 'Goat', 'Goat', 'Goat', 'Goat', 'Goat', 'Goat', 'Goat', 'Goat', '1 million dollars']
@@ -12,12 +12,10 @@ def game_loop(part, number_of_rounds, quick_summary):
     round, switch_wins, stay_wins, infomation = 1, 0, 0, [["Round","Choice","Action","Outcome"]]
     for _ in range(number_of_rounds):
         doors, choices, goat_doors, round_infomation, switch_choice_list  = initialise_doors(part), [1, 2 ,3], [], [], ['switch', 'stay']
-        if part == 5:
-            choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         round_infomation.append(round)
         if part == 1:
             print(f"\nRound #{round}: Door 1 | Door 2 | Door 3")
-            while True:
+            while True: #getting user input
                 user_choice = input("\nChoose a door: ")
                 if user_choice in ['0', '1', '2', '3']:
                     break
@@ -26,14 +24,13 @@ def game_loop(part, number_of_rounds, quick_summary):
                 break
         else:
             user_choice = random.randint(1,3)
-            if part == 5:
+            if part == 5: #random door choice
                 user_choice = random.randint(1,10)
-        choices.remove(user_choice)
         round_infomation.append(user_choice)
 
         counter = 1
         for e in doors:
-            if e == 'Goat':
+            if e == 'Goat': #creates list with all the doors with goats behind except for the users choice
                 goat_doors.append(counter)
             counter += 1
 
@@ -43,6 +40,7 @@ def game_loop(part, number_of_rounds, quick_summary):
                 if i != user_choice and i not in goat_doors:
                     choices.append(i)
         else:
+            choices.remove(user_choice)
             if goat_doors[0] == user_choice:
                 if part == 1:   print(f"Goat is in Door {goat_doors[1]}")
                 choices.remove(goat_doors[1])
